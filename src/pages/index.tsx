@@ -6,16 +6,18 @@ import { trpc } from '$utils/trpc';
 import type { NextPage } from 'next';
 import { useEffect, useState } from 'react';
 
-const Home: NextPage = () => {
-  const [val, valSet] = useState<undefined | number[]>(undefined);
+const Home: NextPage = (props: any) => {
+  const [ids, idsSet] = useState<number[]>(props.ids);
+  const [firstID, secondID] = ids;
   // const { data, isLoading } = trpc.useQuery(['hello', { text: 'lol' }]);
-
+  const firstPokemon = trpc.useQuery(['getPokemonByID', { id: firstID }]);
+  const secondPokemon = trpc.useQuery(['getPokemonByID', { id: secondID }]);
   useEffect(() => {
-    valSet(() => getOptionsForVote());
+    idsSet(() => getOptionsForVote());
   }, []);
-  // if (isLoading) {
-  //   return <p>Loading...</p>;
-  // }
+  if (firstPokemon.isLoading || secondPokemon.isLoading) {
+    return <p>Loading...</p>;
+  }
   return (
     <div>
       <Head>
@@ -29,14 +31,14 @@ const Home: NextPage = () => {
           <div>
             <figure>
               <Image
-                src="/images/pokeball.png"
+                src={firstPokemon.data?.sprites.front_default!}
                 alt="pokeball"
                 width={200}
                 height={200}
                 className="bg-red-500"
               />
               <figcaption className="text-white text-center">
-                {val && val[0]}
+                {firstPokemon.data?.name}
               </figcaption>
             </figure>
             <button className="text-white text-center border rounded-lg py-2 px-4 mx-auto block mt-4">
@@ -47,14 +49,14 @@ const Home: NextPage = () => {
           <div>
             <figure>
               <Image
-                src="/images/pokeball.png"
+                src={secondPokemon.data?.sprites.front_default!}
                 alt="pokeball"
                 width={200}
                 height={200}
                 className="bg-red-500"
               />
               <figcaption className="text-white text-center">
-                {val && val[1]}
+                {secondPokemon.data?.name}
               </figcaption>
             </figure>
             <button className="text-white text-center border rounded-lg py-2 px-4 mx-auto block mt-4">
@@ -68,3 +70,10 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+export const getServerSideProps = async () => {
+  const [first, seconds] = getOptionsForVote();
+  return {
+    props: { ids: [first, seconds] },
+  };
+};
