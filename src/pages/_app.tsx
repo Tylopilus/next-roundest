@@ -2,17 +2,9 @@ import 'tailwindcss/tailwind.css';
 import type { AppProps } from 'next/app';
 import { withTRPC } from '@trpc/next';
 import type { AppRouter } from '$backend/router';
+import '$/styles/global.css';
 function MyApp({ Component, pageProps }: AppProps) {
-  return (
-    <>
-      <Component {...pageProps} />
-      <style jsx global>{`
-        html {
-          background: rgb(31 41 55 / var(--tw-bg-opacity));
-        }
-      `}</style>
-    </>
-  );
+  return <Component {...pageProps} />;
 }
 
 export default withTRPC<AppRouter>({

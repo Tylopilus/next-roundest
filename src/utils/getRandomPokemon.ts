@@ -1,4 +1,4 @@
-const MAX_POKEMON = 254;
+const MAX_POKEMON = 151;
 export const getRandomPokemon = (notThis?: number): number => {
   const random = Math.floor(Math.random() * MAX_POKEMON) + 1;
   if (random !== notThis) {

@@ -4,20 +4,19 @@ import Image from 'next/image';
 import { getOptionsForVote } from '$utils/getRandomPokemon';
 import { trpc } from '$utils/trpc';
 import type { NextPage } from 'next';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { PokeCard } from '$components/PokeCard';
 
-const Home: NextPage = (props: any) => {
-  const [ids, idsSet] = useState<number[]>(props.ids);
-  const [firstID, secondID] = ids;
-  // const { data, isLoading } = trpc.useQuery(['hello', { text: 'lol' }]);
-  const firstPokemon = trpc.useQuery(['getPokemonByID', { id: firstID }]);
-  const secondPokemon = trpc.useQuery(['getPokemonByID', { id: secondID }]);
-  useEffect(() => {
-    idsSet(() => getOptionsForVote());
-  }, []);
-  if (firstPokemon.isLoading || secondPokemon.isLoading) {
-    return <p>Loading...</p>;
-  }
+const Home: NextPage = () => {
+  const [ids, idsSet] = useState(() => getOptionsForVote());
+  const [first, second] = ids;
+  const firstPokemon = trpc.useQuery(['getPokemonByID', { id: first }]);
+  const secondPokemon = trpc.useQuery(['getPokemonByID', { id: second }]);
+
+  const voteForPokemon = (id: number) => {
+    console.log('Voting for pokemon with id: ', id);
+    idsSet(getOptionsForVote());
+  };
   return (
     <div>
       <Head>
@@ -27,42 +26,24 @@ const Home: NextPage = (props: any) => {
       </Head>
 
       <main className="bg-gray-800 flex flex-col h-screen justify-center items-center">
-        <div className="flex gap-8 items-center">
-          <div>
-            <figure>
-              <Image
-                src={firstPokemon.data?.sprites.front_default!}
-                alt="pokeball"
-                width={200}
-                height={200}
-                className="bg-red-500"
+        <h1 className="text-5xl text-white">Which pokemon is rounder?</h1>
+
+        <div className="flex gap-8 items-center mt-4 h-[288px]">
+          {firstPokemon.isLoading || secondPokemon.isLoading ? (
+            <div className="text-white text-xl">Loading...</div>
+          ) : (
+            <>
+              <PokeCard
+                pokemon={firstPokemon.data!}
+                voteFunction={voteForPokemon}
               />
-              <figcaption className="text-white text-center">
-                {firstPokemon.data?.name}
-              </figcaption>
-            </figure>
-            <button className="text-white text-center border rounded-lg py-2 px-4 mx-auto block mt-4">
-              Vote
-            </button>
-          </div>
-          <div className="text-white text-2xl hidden sm:block">vs</div>
-          <div>
-            <figure>
-              <Image
-                src={secondPokemon.data?.sprites.front_default!}
-                alt="pokeball"
-                width={200}
-                height={200}
-                className="bg-red-500"
+              <div className="text-white text-2xl hidden sm:block">vs</div>
+              <PokeCard
+                pokemon={secondPokemon.data!}
+                voteFunction={voteForPokemon}
               />
-              <figcaption className="text-white text-center">
-                {secondPokemon.data?.name}
-              </figcaption>
-            </figure>
-            <button className="text-white text-center border rounded-lg py-2 px-4 mx-auto block mt-4">
-              Vote
-            </button>
-          </div>
+            </>
+          )}
         </div>
       </main>
     </div>
@@ -70,10 +51,3 @@ const Home: NextPage = (props: any) => {
 };
 
 export default Home;
-
-export const getServerSideProps = async () => {
-  const [first, seconds] = getOptionsForVote();
-  return {
-    props: { ids: [first, seconds] },
-  };
-};
