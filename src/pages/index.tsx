@@ -1,8 +1,16 @@
+import { trpc } from '$utils/trpc';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 
 const Home: NextPage = () => {
+  const { data, isLoading } = trpc.useQuery(['hello', { text: 'lol' }]);
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (data) return <div>{data?.greeting}</div>;
   return (
     <div>
       <Head>
@@ -10,6 +18,7 @@ const Home: NextPage = () => {
         <meta name="description" content="Vote for the roundest pokemon" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <main className="bg-gray-800 flex flex-col h-screen justify-center items-center">
         <div className="flex gap-8 items-center">
           <div>
