@@ -1,11 +1,13 @@
 import Image from 'next/image';
-import type { Pokemon, PokemonSprites } from 'pokenode-ts';
 
+import { InferQueryOutput } from '$pages/api/trpc/[trpc]';
+
+type PokemonFromServer = InferQueryOutput<'getPokemonByID'>;
 export const PokeCard = ({
   pokemon,
   voteFunction,
 }: {
-  pokemon: { name: string; sprites: PokemonSprites; id: number };
+  pokemon: PokemonFromServer;
   voteFunction: (id: number) => void;
 }) => (
   <div>
