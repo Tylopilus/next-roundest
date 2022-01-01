@@ -1,16 +1,21 @@
-import { trpc } from '$utils/trpc';
-import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 
+import { getOptionsForVote } from '$utils/getRandomPokemon';
+import { trpc } from '$utils/trpc';
+import type { NextPage } from 'next';
+import { useEffect, useState } from 'react';
+
 const Home: NextPage = () => {
-  const { data, isLoading } = trpc.useQuery(['hello', { text: 'lol' }]);
+  const [val, valSet] = useState<undefined | number[]>(undefined);
+  // const { data, isLoading } = trpc.useQuery(['hello', { text: 'lol' }]);
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
-  if (data) return <div>{data?.greeting}</div>;
+  useEffect(() => {
+    valSet(() => getOptionsForVote());
+  }, []);
+  // if (isLoading) {
+  //   return <p>Loading...</p>;
+  // }
   return (
     <div>
       <Head>
@@ -31,7 +36,7 @@ const Home: NextPage = () => {
                 className="bg-red-500"
               />
               <figcaption className="text-white text-center">
-                Roundest Pokemon
+                {val && val[0]}
               </figcaption>
             </figure>
             <button className="text-white text-center border rounded-lg py-2 px-4 mx-auto block mt-4">
@@ -49,7 +54,7 @@ const Home: NextPage = () => {
                 className="bg-red-500"
               />
               <figcaption className="text-white text-center">
-                Roundest Pokemon
+                {val && val[1]}
               </figcaption>
             </figure>
             <button className="text-white text-center border rounded-lg py-2 px-4 mx-auto block mt-4">
