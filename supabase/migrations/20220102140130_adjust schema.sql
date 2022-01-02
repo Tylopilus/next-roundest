@@ -3,20 +3,6 @@
 -- and may require manual changes to the script to ensure changes are applied in the correct order.
 -- Please report an issue for any failure with the reproduction steps.
 
-CREATE TABLE IF NOT EXISTS public."Pokemon"
-(
-    id integer NOT NULL,
-    name text COLLATE pg_catalog."default" NOT NULL,
-    "spriteUrl" text COLLATE pg_catalog."default" NOT NULL,
-    "createdAt" timestamp(3) without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT "Pokemon_pkey" PRIMARY KEY (id)
-)
-
-TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public."Pokemon"
-    OWNER to postgres;
-
 CREATE TABLE IF NOT EXISTS public._prisma_migrations
 (
     id character varying(36) COLLATE pg_catalog."default" NOT NULL,
@@ -34,6 +20,36 @@ TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS public._prisma_migrations
     OWNER to postgres;
+
+GRANT ALL ON TABLE public._prisma_migrations TO anon;
+
+GRANT ALL ON TABLE public._prisma_migrations TO authenticated;
+
+GRANT ALL ON TABLE public._prisma_migrations TO postgres;
+
+GRANT ALL ON TABLE public._prisma_migrations TO service_role;
+
+CREATE TABLE IF NOT EXISTS public."Pokemon"
+(
+    id integer NOT NULL,
+    name text COLLATE pg_catalog."default" NOT NULL,
+    "spriteUrl" text COLLATE pg_catalog."default" NOT NULL,
+    "createdAt" timestamp(3) without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "Pokemon_pkey" PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public."Pokemon"
+    OWNER to postgres;
+
+GRANT ALL ON TABLE public."Pokemon" TO anon;
+
+GRANT ALL ON TABLE public."Pokemon" TO authenticated;
+
+GRANT ALL ON TABLE public."Pokemon" TO postgres;
+
+GRANT ALL ON TABLE public."Pokemon" TO service_role;
 
 CREATE TABLE IF NOT EXISTS public."Vote"
 (
@@ -56,3 +72,11 @@ TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS public."Vote"
     OWNER to postgres;
+
+GRANT ALL ON TABLE public."Vote" TO anon;
+
+GRANT ALL ON TABLE public."Vote" TO authenticated;
+
+GRANT ALL ON TABLE public."Vote" TO postgres;
+
+GRANT ALL ON TABLE public."Vote" TO service_role;
