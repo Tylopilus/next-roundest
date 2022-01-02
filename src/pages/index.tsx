@@ -1,12 +1,12 @@
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
+import type { NextPage } from 'next';
 
 import { getOptionsForVote } from '$utils/getRandomPokemon';
 import { trpc } from '$utils/trpc';
-import type { NextPage } from 'next';
 import { useState } from 'react';
 import { PokeCard } from '$components/PokeCard';
-import Link from 'next/link';
 
 const Home: NextPage = () => {
   const [ids, idsSet] = useState(() => getOptionsForVote());
@@ -36,7 +36,9 @@ const Home: NextPage = () => {
 
           <div className="flex gap-8 items-center mt-4 h-[288px]">
             {firstPokemon.isLoading || secondPokemon.isLoading ? (
-              <div className="text-xl text-white">Loading...</div>
+              <div className="text-xl text-white">
+                <Image src="/puff.svg" width={100} height={100} />
+              </div>
             ) : (
               <>
                 <PokeCard
