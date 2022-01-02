@@ -32,7 +32,9 @@ const Home: NextPage = () => {
 
       <main className="flex flex-col items-center justify-center h-screen pb-8 bg-gray-800">
         <section className="flex flex-col items-center justify-center flex-1">
-          <h1 className="text-5xl text-white">Which pokemon is rounder?</h1>
+          <h1 className="text-5xl text-center text-white">
+            Which pokemon is rounder?
+          </h1>
 
           <div className="flex gap-8 items-center mt-4 h-[288px]">
             {firstPokemon.isLoading || secondPokemon.isLoading ? (
