@@ -8,7 +8,7 @@ export const PokeCard = ({
   voteFunction,
 }: {
   pokemon: PokemonFromServer;
-  voteFunction: (id: number) => void;
+  voteFunction: () => void;
 }) => (
   <div>
     <figure>
@@ -24,7 +24,7 @@ export const PokeCard = ({
     </figure>
     <button
       className="text-white text-center border rounded-lg py-2 px-4 mx-auto block mt-4"
-      onClick={() => voteFunction(pokemon.id)}>
+      onClick={voteFunction}>
       Vote
     </button>
   </div>

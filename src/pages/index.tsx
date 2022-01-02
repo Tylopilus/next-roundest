@@ -35,12 +35,12 @@ const Home: NextPage = () => {
             <>
               <PokeCard
                 pokemon={firstPokemon.data!}
-                voteFunction={voteForPokemon}
+                voteFunction={() => voteForPokemon(first)}
               />
               <div className="text-white text-2xl hidden sm:block">vs</div>
               <PokeCard
                 pokemon={secondPokemon.data!}
-                voteFunction={voteForPokemon}
+                voteFunction={() => voteForPokemon(second)}
               />
             </>
           )}
