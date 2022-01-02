@@ -6,6 +6,7 @@ import { trpc } from '$utils/trpc';
 import type { NextPage } from 'next';
 import { useState } from 'react';
 import { PokeCard } from '$components/PokeCard';
+import Link from 'next/link';
 
 const Home: NextPage = () => {
   const [ids, idsSet] = useState(() => getOptionsForVote());
@@ -29,26 +30,33 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="bg-gray-800 flex flex-col h-screen justify-center items-center">
-        <h1 className="text-5xl text-white">Which pokemon is rounder?</h1>
+      <main className="flex flex-col items-center justify-center h-screen pb-8 bg-gray-800">
+        <section className="flex flex-col items-center justify-center flex-1">
+          <h1 className="text-5xl text-white">Which pokemon is rounder?</h1>
 
-        <div className="flex gap-8 items-center mt-4 h-[288px]">
-          {firstPokemon.isLoading || secondPokemon.isLoading ? (
-            <div className="text-white text-xl">Loading...</div>
-          ) : (
-            <>
-              <PokeCard
-                pokemon={firstPokemon.data!}
-                voteFunction={() => voteForPokemon(first, second)}
-              />
-              <div className="text-white text-2xl hidden sm:block">vs</div>
-              <PokeCard
-                pokemon={secondPokemon.data!}
-                voteFunction={() => voteForPokemon(second, first)}
-              />
-            </>
-          )}
-        </div>
+          <div className="flex gap-8 items-center mt-4 h-[288px]">
+            {firstPokemon.isLoading || secondPokemon.isLoading ? (
+              <div className="text-xl text-white">Loading...</div>
+            ) : (
+              <>
+                <PokeCard
+                  pokemon={firstPokemon.data!}
+                  voteFunction={() => voteForPokemon(first, second)}
+                />
+                <div className="hidden text-2xl text-white sm:block">vs</div>
+                <PokeCard
+                  pokemon={secondPokemon.data!}
+                  voteFunction={() => voteForPokemon(second, first)}
+                />
+              </>
+            )}
+          </div>
+        </section>
+        <section>
+          <Link href="/results">
+            <a className="text-white text-md">Show results</a>
+          </Link>
+        </section>
       </main>
     </div>
   );
