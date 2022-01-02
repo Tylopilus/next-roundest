@@ -9,8 +9,14 @@ export const appRouter = trpc
     input: z.object({ id: z.number() }),
     async resolve({ input }) {
       const pokemonApi = new PokemonClient();
-      const pokemon = await pokemonApi.getPokemonById(input.id);
-      return { name: pokemon.name, sprites: pokemon.sprites, id: pokemon.id };
+      // const pokemon = await pokemonApi.getPokemonById(input.id);
+      const pokemon = await prisma.pokemon.findFirst({
+        where: { id: input.id },
+      });
+      if (!pokemon) {
+        throw new Error('Pokemon not found');
+      }
+      return pokemon;
     },
   })
   .mutation('cast-vote', {
@@ -21,8 +27,7 @@ export const appRouter = trpc
     async resolve({ input }) {
       const voteInDB = await prisma.vote.create({
         data: {
-          votedFor: input.votedFor,
-          votedAgainst: input.votedAgainst,
+          ...input,
         },
       });
       return {

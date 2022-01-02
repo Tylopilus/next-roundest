@@ -12,18 +12,13 @@ export const PokeCard = ({
 }) => (
   <div>
     <figure>
-      <Image
-        src={pokemon.sprites.front_default!}
-        alt="pokeball"
-        width={200}
-        height={200}
-      />
-      <figcaption className="text-white text-center capitalize">
+      <Image src={pokemon.spriteUrl} alt="pokeball" width={200} height={200} />
+      <figcaption className="text-center text-white capitalize">
         {pokemon.name}
       </figcaption>
     </figure>
     <button
-      className="text-white text-center border rounded-lg py-2 px-4 mx-auto block mt-4"
+      className="block px-4 py-2 mx-auto mt-4 text-center text-white border rounded-lg"
       onClick={voteFunction}>
       Vote
     </button>
