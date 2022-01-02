@@ -13,8 +13,12 @@ const Home: NextPage = () => {
   const firstPokemon = trpc.useQuery(['getPokemonByID', { id: first }]);
   const secondPokemon = trpc.useQuery(['getPokemonByID', { id: second }]);
 
-  const voteForPokemon = (id: number) => {
-    console.log('Voting for pokemon with id: ', id);
+  const voteMutation = trpc.useMutation(['cast-vote']);
+  const voteForPokemon = (votedFor: number, votedAgainst: number) => {
+    voteMutation.mutate({
+      votedFor,
+      votedAgainst,
+    });
     idsSet(getOptionsForVote());
   };
   return (
@@ -35,12 +39,12 @@ const Home: NextPage = () => {
             <>
               <PokeCard
                 pokemon={firstPokemon.data!}
-                voteFunction={() => voteForPokemon(first)}
+                voteFunction={() => voteForPokemon(first, second)}
               />
               <div className="text-white text-2xl hidden sm:block">vs</div>
               <PokeCard
                 pokemon={secondPokemon.data!}
-                voteFunction={() => voteForPokemon(second)}
+                voteFunction={() => voteForPokemon(second, first)}
               />
             </>
           )}
