@@ -27,7 +27,8 @@ export const appRouter = trpc
     async resolve({ input }) {
       const voteInDB = await prisma.vote.create({
         data: {
-          ...input,
+          votedForId: input.votedFor,
+          votedAgainstId: input.votedAgainst,
         },
       });
       return {
