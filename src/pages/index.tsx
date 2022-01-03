@@ -39,7 +39,12 @@ const Home: NextPage = () => {
           <div className="flex gap-8 items-center mt-4 h-[288px]">
             {firstPokemon.isLoading || secondPokemon.isLoading ? (
               <div className="text-xl text-white">
-                <Image src="/puff.svg" width={100} height={100} />
+                <Image
+                  src="/puff.svg"
+                  width={100}
+                  height={100}
+                  alt="loading indicator"
+                />
               </div>
             ) : (
               <>
